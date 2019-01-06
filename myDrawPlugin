@@ -1,4 +1,4 @@
 ! Hierarchy of plug-ins 
-DEFAULT            : MYDRAW
+DEFAULT            : MYDRAWPLUGIN
 ! Mapping from naming to toolkits (libraries) 
-MYDRAW            : myDraw
+MYDRAWPLUGIN            : TKmyDrawPlugin
