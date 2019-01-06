@@ -51,14 +51,11 @@ As mentioned above, the plug-in resource file must be compliant with Open CASCAD
 Examples (file MyDrawPlugin):
 
 ```
-! Hierarchy of plug-ins
-ALL                : ADVMODELING, MESHING
-DEFAULT            : MESHING
-ADVMODELING        : ADVSURF, ADVCURV
-! Mapping from naming to toolkits (libraries)
-ADVSURF            : TKMyAdvSurf
-ADVCURV            : TKMyAdvCurv
-MESHING            : TKMyMesh
+ ! Hierarchy of plug-ins
+ DEFAULT            : MYDRAWPLUGIN
+ ! Mapping from naming to toolkits (libraries)
+  MYDRAWPLUGIN            : TKmyDrawPlugin
+
 ```
 
 For other examples of the plug-in resource file refer to the Plug-in resource file chapter above or to the $CASROOT/src/DrawPlugin file shipped with Open CASCADE Technology.
@@ -70,6 +67,8 @@ The procedure consists in defining the system variables and using the pload comm
 
 
 ```
-Draw[]> set env(CSF_MyDrawPluginDefaults) /users/test
+Draw[]> set env(CSF_MyDrawPluginDefaults) /<myDrawPlugin-root-folder>/
 Draw[]> pload -MyDrawPlugin ALL
+Draw[]> myDrawCommand
+Test MyDrawCommand
 ```
