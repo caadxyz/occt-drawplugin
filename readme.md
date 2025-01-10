@@ -1,9 +1,8 @@
-### Extending Test Harness with custom commands
+# Extending Test Harness with custom commands
 
 How to extend Test Harness with custom commands and how to activate them using a plug-in mechanism?
 
-
-```
+```c++
 static Standard_Integer myDrawCommand(Draw_Interpretor& di, Standard_Integer argc, char** argv)
 {
 ...
@@ -13,7 +12,7 @@ static Standard_Integer myDrawCommand(Draw_Interpretor& di, Standard_Integer arg
 Registration of commands in Test Harness
 To become available in the Test Harness the custom command must be registered in it. This should be done as follows.
 
-```
+```c++
 void MyDrawPlugin::CommonCommands(Draw_Interpretor& theCommands)
 {
 ...
@@ -25,14 +24,14 @@ theCommands.Add ( "myDrawCommand", "myDrawCommand Description",
 ```
 
 Creating a toolkit (library) as a plug-in
-All custom commands are compiled and linked into a dynamic library (.dll on Windows, or .so on Unix/Linux). 
+All custom commands are compiled and linked into a dynamic library (.dll on Windows, or .so on Unix/Linux).
 To make Test Harness recognize it as a plug-in it must respect certain conventions. Namely, it must export function PLUGINFACTORY() accepting the Test Harness interpreter object (Draw_Interpretor). This function will be called when the library is dynamically loaded during the Test Harness session.
 
 This exported function PLUGINFACTORY() must be implemented only once per library.
 
 For convenience the DPLUGIN macro (defined in the Draw_PluginMacro.hxx file) has been provided. It implements the PLUGINFACTORY() function as a call to the Package::Factory() method and accepts Package as an argument. Respectively, this Package::Factory() method must be implemented in the library and activate all implemented commands.
 
-```
+```c++
 #include <Draw_PluginMacro.hxx>
 void MyDrawPlugin::Factory(Draw_Interpretor& theDI)
 {
@@ -50,7 +49,7 @@ As mentioned above, the plug-in resource file must be compliant with Open CASCAD
 
 Examples (file MyDrawPlugin):
 
-```
+```text
  ! Hierarchy of plug-ins
  DEFAULT            : MYDRAWPLUGIN
  ! Mapping from naming to toolkits (libraries)
@@ -65,10 +64,10 @@ Loading a plug-in and activating its commands is described in the Activation of 
 
 The procedure consists in defining the system variables and using the pload commands in the Test Harness session.
 
-
-```
+```bash
+# should add file `myDrawPlugin` and `libTKmyDrawPlugin.so` to `<CASROOT>/share/opencascade/resources/DrawResources/`
 Draw[]> set env(CSF_MyDrawPluginDefaults) /<myDrawPlugin-root-folder>/
-Draw[]> pload -MyDrawPlugin ALL
-Draw[]> myDrawCommand
+Draw[]> pload -myDrawPlugin DEFAULT
+Draw[]> MyDrawCommand
 Test MyDrawCommand
 ```

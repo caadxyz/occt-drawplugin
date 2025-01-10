@@ -9,9 +9,18 @@ set(APP_TARGET TKmyDrawPlugin)
 include_directories(${PROJECT_SOURCE_DIR})
 
 # opencasacde 
-# make sure that your "CASROOT" environment variable contains a directory, where "lib/libTKernel.so|lib/libTKernel.dylib|lib/TKernel.lib" is located.
-INCLUDE_DIRECTORIES($ENV{CASROOT}/include/opencascade/)
-LINK_DIRECTORIES($ENV{CASROOT}/lib/)
+set(OpenCASCADE_DIR "/home/user/opt/occt_77/lib/cmake/opencascade")
+find_package(OpenCASCADE REQUIRED NO_DEFAULT_PATH)
+if (OpenCASCADE_FOUND)
+  message (STATUS "Using OpenCASCADE from \"${OpenCASCADE_DIR}\"" )
+  INCLUDE_DIRECTORIES(${OpenCASCADE_INCLUDE_DIR})
+  LINK_DIRECTORIES(${OpenCASCADE_LIBRARY_DIR})
+else()
+  message (WARNING "Could not find OpenCASCADE, please set OpenCASCADE_DIR variable." )
+  set (OCCT_LIBRARY_DIR)
+  set (OCCT_BIN_DIR)
+endif()
+
 SET(OpenCASCADE_LIBS 
   TKernel
   TKService 
